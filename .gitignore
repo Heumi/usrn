@@ -1,0 +1,11 @@
+USRN_ref
+USRN_exp
+USRN_ppt
+USRN_papr
+
+.idea
+.DS_Store
+
+*.pyc
+*.xlm
+
