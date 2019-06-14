@@ -15,20 +15,23 @@ parser.add_argument("--exp_load", type=str, default=None)
 
 # Data
 parser.add_argument("--data_dir", type=str, default="/mnt/sda")
-parser.add_argument("--data_name", type=str, default="fashion_mnist")
+parser.add_argument("--data_name", type=str, default="div2k")
 parser.add_argument('--batch_size', type=int, default=32)
 parser.add_argument('--rgb_range', type=int, default=3)
 
 # Model
-parser.add_argument('--scale', type=int, default=4)
+parser.add_argument('--uncertainty', default='normal',
+                    choices=('normal', 'epistemic', 'aleatoric', 'combined'))
+parser.add_argument('--scale', type=int, default=2)
 parser.add_argument('--in_channels', type=int, default=1)
-parser.add_argument('--n_feats', type=int, default=32)
+parser.add_argument('--n_feats', type=int, default=64)
 parser.add_argument('--var_weight', type=float, default=1.)
+parser.add_argument('--drop_rate', type=float, default=0.2)
 
 # Train
 parser.add_argument("--epochs", type=int, default=200)
 parser.add_argument("--lr", type=float, default=1e-3)
-parser.add_argument("--decay", type=str, default='50-50-50-50')
+parser.add_argument("--decay", type=str, default='50-100-150-0')
 parser.add_argument("--gamma", type=float, default=0.5)
 parser.add_argument("--optimizer", type=str, default='adam')
 parser.add_argument("--weight_decay", type=float, default=1e-4)

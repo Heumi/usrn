@@ -4,9 +4,10 @@ import torch.nn.functional as F
 
 
 class MSE_VAR(nn.Module):
-    def __init__(self, var_weight):
+    def __init__(self, var_weight=1.):
         super(MSE_VAR, self).__init__()
         self.var_weight = var_weight
+
     def forward(self, results, label):
         mean, var = results['mean'], results['var']
         var = self.var_weight * var

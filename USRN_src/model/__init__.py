@@ -13,7 +13,7 @@ class Model(nn.Module):
         self.is_train = config.is_train
         self.num_gpu = config.num_gpu
         self.n_samples = config.n_samples
-        module = import_module('model.' + 'normal')
+        module = import_module('model.' + config.model_type)
         self.model = module.make_model(config).to(config.device)
 
     def forward(self, input):

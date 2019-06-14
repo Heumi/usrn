@@ -12,9 +12,12 @@ class Loss(nn.Module):
         self.losses = []
         self.loss_module = nn.ModuleList()
 
-        module = import_module('loss.mse')
-        loss_function = getattr(module, 'MSE')()
-
+        if config.model_type == 'normal':
+            module = import_module('loss.mse')
+            loss_function = getattr(module, 'MSE')()
+        if config.model_type == 'usrn':
+            module = import_module('loss.mse_var')
+            loss_function = getattr(module, 'MSE_VAR')()
         self.losses.append({'function': loss_function})
 
         self.loss_module.to(config.device)

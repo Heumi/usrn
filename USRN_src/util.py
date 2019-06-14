@@ -17,14 +17,15 @@ class Checkpoint:
         self.config = config
         self.exp_dir = config.exp_dir
         self.exp_load = config.exp_load
+        model_type = config.model_type
         data_name = config.data_name
-        exp_type = config.scale
+        scale = config.scale
         now = datetime.now().strftime('%m%d_%H%M')
 
         if config.exp_load is None:
-            dir_fmt = '{}/{}_{}'.format(data_name, exp_type, now)
+            dir_fmt = '{}/{}x{}_{}'.format(data_name, model_type, scale, now)
         else:
-            dir_fmt = '{}/{}_{}'.format(data_name, exp_type, self.exp_load)
+            dir_fmt = '{}/{}x{}_{}'.format(data_name, model_type, scale, self.exp_load)
 
         self.model_dir = os.path.join(self.exp_dir, dir_fmt, 'model')
         self.log_dir = os.path.join(self.exp_dir, dir_fmt, 'log')

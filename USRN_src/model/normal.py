@@ -11,8 +11,8 @@ def make_model(args):
 class NORMAL(nn.Module):
     def __init__(self, config, conv=common.default_conv):
         super(NORMAL, self).__init__()
+        self.scale = config.scale
         in_channels = config.in_channels
-        scale = config.scale
         n_feats = config.n_feats
         kernel_size = 3
 
@@ -25,7 +25,7 @@ class NORMAL(nn.Module):
         body.append(conv(n_feats, n_feats, kernel_size))
 
         # define upsample module
-        upsample = [common.Upsampler(conv, scale, n_feats, act=False),
+        upsample = [common.Upsampler(conv, self.scale, n_feats, act=False),
                     conv(n_feats, in_channels, kernel_size)]
 
         self.head = nn.Sequential(*head)
@@ -33,7 +33,7 @@ class NORMAL(nn.Module):
         self.upsample = nn.Sequential(*upsample)
 
     def forward(self, x):
-        x = F.interpolate(x, scale_factor=0.25)
+        x = F.interpolate(x, scale_factor=1/self.scale)
         x_head = self.head(x)
         x_body = self.body(x_head)
         x_mean = self.upsample(x_body)
