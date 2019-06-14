@@ -112,8 +112,8 @@ class RCAN(nn.Module):
 
         x = self.tail(res)
         x = self.add_mean(x)
-
-        return x 
+        result = {'mean': x}
+        return result
 
     def load_state_dict(self, state_dict, strict=False):
         own_state = self.state_dict()

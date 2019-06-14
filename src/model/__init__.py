@@ -132,7 +132,8 @@ class Model(nn.Module):
                         y_chop.extend(_y.chunk(n_GPUs, dim=0))
         else:
             for p in zip(*x_chops):
-                y = self.forward_chop(*p, shave=shave, min_size=min_size)
+                result = self.forward_chop(*p, shave=shave, min_size=min_size)
+                y = result['mean']
                 if not isinstance(y, list): y = [y]
                 if not y_chops:
                     y_chops = [[_y] for _y in y]
@@ -187,8 +188,10 @@ class Model(nn.Module):
 
         list_y = []
         for x in zip(*list_x):
-            y = forward_function(*x)
-            if not isinstance(y, list): y = [y]
+            result = forward_function(*x)
+            y = result['mean']
+            if not isinstance(y, list):
+                y = [y]
             if not list_y:
                 list_y = [[_y] for _y in y]
             else:

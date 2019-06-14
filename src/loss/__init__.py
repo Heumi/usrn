@@ -24,28 +24,15 @@ class Loss(nn.modules.loss._Loss):
             weight, loss_type = loss.split('*')
             if loss_type == 'MSE':
                 loss_function = nn.MSELoss()
-            elif loss_type == 'L1':
-                loss_function = nn.L1Loss()
-            elif loss_type.find('VGG') >= 0:
-                module = import_module('loss.vgg')
-                loss_function = getattr(module, 'VGG')(
-                    loss_type[3:],
-                    rgb_range=args.rgb_range
-                )
-            elif loss_type.find('GAN') >= 0:
-                module = import_module('loss.adversarial')
-                loss_function = getattr(module, 'Adversarial')(
-                    args,
-                    loss_type
-                )
+            elif loss_type.find('MSE_VAR') >= 0:
+                module = import_module('loss.mse_var')
+                loss_function = getattr(module, 'MSE_VAR')()
 
             self.loss.append({
                 'type': loss_type,
                 'weight': float(weight),
                 'function': loss_function}
             )
-            if loss_type.find('GAN') >= 0:
-                self.loss.append({'type': 'DIS', 'weight': 1, 'function': None})
 
         if len(self.loss) > 1:
             self.loss.append({'type': 'Total', 'weight': 0, 'function': None})
